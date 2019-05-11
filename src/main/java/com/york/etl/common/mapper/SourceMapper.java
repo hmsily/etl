@@ -10,6 +10,11 @@ public interface SourceMapper {
 
     Date getMinDate(Map<String, Object> map);
     
+    /**
+     * sss
+     * @param map
+     * @return
+     */
     long getMaxId(Map<String, Object> map);
 
     Date getMaxDate(Map<String, Object> map);
