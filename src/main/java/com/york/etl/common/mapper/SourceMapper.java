@@ -9,6 +9,10 @@ public interface SourceMapper {
     long getMinId(Map<String, Object> map);
 
     Date getMinDate(Map<String, Object> map);
+    
+    long getMaxId(Map<String, Object> map);
+
+    Date getMaxDate(Map<String, Object> map);
 
     List<Map<String, Object>> listById(Map<String, Object> condition);
 
