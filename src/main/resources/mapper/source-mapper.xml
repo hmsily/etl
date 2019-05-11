@@ -22,4 +22,12 @@
     <select id="getMinId" resultType="Long" parameterType="Map">
         SELECT MIN(${field}) FROM ${table}
     </select>
+    
+        <select id="getMaxDate" resultType="Date">
+        SELECT MAX(${field}) FROM ${table}
+    </select>
+
+    <select id="getMaxId" resultType="Long" parameterType="Map">
+        SELECT MAX(${field}) FROM ${table}
+    </select>
 </mapper>

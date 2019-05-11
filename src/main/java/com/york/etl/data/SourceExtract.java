@@ -61,6 +61,7 @@ public class SourceExtract extends AbstractExtract {
     public List<Map<String, Object>> extract() {
 
         TASK_PARAMS.put("taskName",getTaskName());
+        
         LOG.info("配置的抽取的默认大小是：" + EXTRACT_SIZE);
 
         List<Map<String, Object>> list;

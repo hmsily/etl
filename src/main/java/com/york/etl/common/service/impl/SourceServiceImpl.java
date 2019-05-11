@@ -40,14 +40,27 @@ public class SourceServiceImpl implements SourceService {
     		condition.put("taskId",taskId);
     		begin = sourceMapper.getMinId(condition);
     		condition.put("begin",begin);
-    		condition.put("end",INTERVAL);
+    		//²éÕÒ×î´óID
+    		long maxID = sourceMapper.getMaxId(condition);
+    		if(INTERVAL > maxID) {
+    			end = maxID;
+    		}else {
+    			end = INTERVAL;
+    		}    		
+    		condition.put("end",end);
     		taskRecord = new HashMap<String, Object>(condition);
     		taskRecord.put("updateTime",new Date());
 			taskMapper.addRecord(taskRecord);
 		}else {
-			begin = (long) taskRecord.get("currentId");
-			end = begin + INTERVAL;
-			taskRecord.put("begin", end);
+			begin = (long) taskRecord.get("currentValue");
+			taskRecord.put("begin", begin);
+			long maxId = sourceMapper.getMaxId(condition);
+			if((begin+INTERVAL)>maxId) {
+				end = maxId;
+			}else {
+				end = begin+INTERVAL;
+			}
+			taskRecord.put("end", end);
 			taskMapper.updateRecord(taskRecord);
 		}
         return sourceMapper.listById(condition);

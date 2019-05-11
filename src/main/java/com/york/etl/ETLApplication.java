@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @MapperScan(basePackages = "com.york.etl.common.mapper")
 @SpringBootApplication
-public class EtlApplication {
+public class ETLApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EtlApplication.class, args);
+		SpringApplication.run(ETLApplication.class, args);
 	}
 
 }
