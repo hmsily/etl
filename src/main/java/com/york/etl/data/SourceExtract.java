@@ -1,12 +1,11 @@
 package com.york.etl.data;
 
 import com.york.etl.common.base.AbstractExtract;
-import com.york.etl.common.service.DataService;
+import com.york.etl.common.service.SourceService;
 import com.york.etl.util.PropertyUtil;
 import com.york.etl.util.SpringContextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.Map;
  * @date 2019/5/9 0009
  * @since jdk1.8
  */
-public class DataExtract extends AbstractExtract {
+public class SourceExtract extends AbstractExtract {
 
 	/**
 	 * 抽取的表明
@@ -40,7 +39,7 @@ public class DataExtract extends AbstractExtract {
 	 */
 	private static final Map<String,Object> TASK_PARAMS = new HashMap<String, Object>(16);
     
-    private static final Logger LOG = LoggerFactory.getLogger(DataExtract.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SourceExtract.class);
 
     private static int EXTRACT_SIZE = 0;
 
@@ -56,7 +55,7 @@ public class DataExtract extends AbstractExtract {
 
     }
 
-    private DataService dataService = (DataService) SpringContextUtil.getBean(DataService.class);
+    private SourceService dataService = (SourceService) SpringContextUtil.getBean(SourceService.class);
 
     @Override
     public List<Map<String, Object>> extract() {

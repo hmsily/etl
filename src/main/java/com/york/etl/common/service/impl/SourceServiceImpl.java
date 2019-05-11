@@ -2,7 +2,7 @@ package com.york.etl.common.service.impl;
 
 import com.york.etl.common.mapper.SourceMapper;
 import com.york.etl.common.mapper.TaskMapper;
-import com.york.etl.common.service.DataService;
+import com.york.etl.common.service.SourceService;
 import com.york.etl.util.PropertyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +18,11 @@ import java.util.*;
  * @since jdk1.8
  */
 @Service
-public class DataServiceImpl implements DataService {
+public class SourceServiceImpl implements SourceService {
 
 	private static final long INTERVAL = Integer.parseInt(PropertyUtil.getProperty("task.interval"));
 
-	private static final Logger LOG = LoggerFactory.getLogger(DataServiceImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SourceServiceImpl.class);
     @Autowired
     private TaskMapper taskMapper;
     
