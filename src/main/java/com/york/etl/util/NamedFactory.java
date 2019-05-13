@@ -19,6 +19,6 @@ public class NamedFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable r) {
-        return new Thread(r,name +   "-thread" + tag.getAndIncrement());
+        return new Thread(r,name + "-thread" + tag.getAndIncrement());
     }
 }

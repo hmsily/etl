@@ -3,7 +3,6 @@ package com.york.etl.util;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,7 +20,7 @@ public class SpringContextUtil implements ApplicationContextAware {
         context = applicationContext;
     }
 
-    public static Object getBean(Class clazz){
+    public static Object getBean(Class<?> clazz){
         return context.getBean(clazz);
     }
 }

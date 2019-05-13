@@ -50,6 +50,7 @@ public class SourceExtract extends AbstractExtract {
 			TASK_PARAMS.put(FIELD_NAME, PropertyUtil.getProperty(FIELD_NAME));
 			TASK_PARAMS.put(FIELDS, PropertyUtil.getProperty(FIELDS));
 			EXTRACT_TYPE = Integer.parseInt(PropertyUtil.getProperty("task.extract.type"));
+			LOG.debug("构建的任务对象为：" + TASK_PARAMS);
 
     }
 
@@ -58,7 +59,9 @@ public class SourceExtract extends AbstractExtract {
     @Override
     public List<Map<String, Object>> extract() {
 
-        TASK_PARAMS.put("taskName",getTaskName());
+    	if (!TASK_PARAMS.containsKey("taskName")) {
+    		TASK_PARAMS.put("taskName",getTaskName());
+		}
         
         List<Map<String, Object>> list;
         if (EXTRACT_TYPE == 0) {

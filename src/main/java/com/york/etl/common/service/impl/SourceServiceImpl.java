@@ -33,33 +33,23 @@ public class SourceServiceImpl implements SourceService {
     @Override
     public List<Map<String, Object>> getByID(Map<String,Object> condition) {
 		LOG.info(condition + "");
-		long begin = 0, end;
+		long begin = 0, end = 0;
     	Map<String,Object> taskRecord = taskMapper.getRecord(condition);
+    	long maxID = sourceMapper.getMaxId(condition);
     	if (taskRecord == null) {
+    		LOG.info("数据库中有记录获取的task信息是：" + taskRecord);
     		String taskId = UUID.randomUUID().toString().replace("-","");
     		condition.put("taskId",taskId);
     		begin = sourceMapper.getMinId(condition);
-    		long maxID = sourceMapper.getMaxId(condition);
-    		if(INTERVAL > maxID) {
-    			end = maxID;
-    		}else {
-    			end = INTERVAL;
-    		}    		
+    		end = (INTERVAL > maxID)? maxID: INTERVAL;
     		taskRecord = new HashMap<String, Object>(condition);
+    		taskRecord.put("end",end);
     		taskRecord.put("updateTime",new Date());
 			taskMapper.addRecord(taskRecord);
 		}else {
 			LOG.info("数据库中有记录获取的task信息是：" + taskRecord);
-			Object o = taskRecord.get("CURRENT_VALUE");
-			begin = Long.valueOf(taskRecord.get("CURRENT_VALUE").toString( )).longValue( );
-			taskRecord.put("begin", begin);
-			long maxId = sourceMapper.getMaxId(condition);
-			if((begin+INTERVAL)>maxId) {
-				end = maxId;
-			}else {
-				end = begin+INTERVAL;
-			}
-			LOG.info(o.toString( ) + "sss");
+			begin = Long.valueOf(taskRecord.get("CURRENT_VALUE").toString( ));
+			end = ((begin + INTERVAL) > maxID)? maxID:(begin + INTERVAL) ;
 			taskRecord.put("end", end);
 			taskRecord.put("taskId", taskRecord.get("ID"));
 			taskRecord.put("updateTime", new Date( ));

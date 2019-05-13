@@ -13,8 +13,8 @@ public abstract class AbstractTrans {
     /**
      * 对Map对象进行转换
      *
-     * @param bean
-     * @return
+     * @param bean 待转换的map
+     * @return 转换之后的Map对象
      */
     public abstract Map<String, Object> handler(Map<String, Object> bean);
 }

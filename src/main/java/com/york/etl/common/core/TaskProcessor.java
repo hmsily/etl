@@ -5,6 +5,9 @@ import com.york.etl.common.base.AbstractTrans;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author zhang
  * @version 1.0
@@ -12,6 +15,8 @@ import java.util.Map;
  * @since jdk1.8
  */
 public class TaskProcessor implements Runnable {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(TaskProcessor.class);
 
     private Map<String, Object> bean;
 
@@ -38,10 +43,12 @@ public class TaskProcessor implements Runnable {
      */
     @Override
     public void run() {
+    	LOG.info("处理数据的转换类:" + trans);
         Map<String, Object> o = trans.handler(bean);
         if (o == null) {
             return;
         }
+        LOG.info("处理数据" + bean);
         load.loadFather(o);
     }
 }
