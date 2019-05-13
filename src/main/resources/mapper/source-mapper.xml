@@ -6,13 +6,13 @@
     <select id="listById" resultType="Map">
         SELECT
         ${fields}
-        FROM ${table} WHERE ${field} >= #{start} AND ${field} &lt; #{end}
+        FROM ${table} WHERE ${field} >= #{begin} AND ${field} &lt; #{end}
     </select>
 
     <select id="listByDate" resultType="Map">
         SELECT
         ${fields}
-        FROM ${table} WHERE ${field} >= #{start} AND ${field} &lt; #{end}
+        FROM ${table} WHERE ${field} >= #{begin} AND ${field} &lt; #{end}
     </select>
 
     <select id="getMinDate" resultType="Date">

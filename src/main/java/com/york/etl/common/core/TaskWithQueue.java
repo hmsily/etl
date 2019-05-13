@@ -3,10 +3,15 @@ package com.york.etl.common.core;
 import com.york.etl.common.base.AbstractExtract;
 import com.york.etl.common.base.AbstractLoad;
 import com.york.etl.common.base.AbstractTrans;
+import com.york.etl.util.NamedFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author zhang
@@ -24,6 +29,7 @@ public class TaskWithQueue {
 
     private AbstractLoad load;
 
+    private static final Logger LOG = LoggerFactory.getLogger(TaskWithQueue.class);
     /**
      * 任务队列构造方法
      *
@@ -40,18 +46,24 @@ public class TaskWithQueue {
 
         extract.setTaskName(task.getName());
 
-//        trans = (AbstractTrans) Class.forName(task.getTransClass( )).newInstance( );
-//
-//        load = (AbstractLoad) Class.forName(task.getLoadClass( )).newInstance( );
     }
 
     public void handler() {
 
+        ScheduledThreadPoolExecutor scheduledThreadPoolExecutor =
+                new ScheduledThreadPoolExecutor(1, new NamedFactory("load-pool"));
+        scheduledThreadPoolExecutor.scheduleWithFixedDelay(() -> handlerAdapt( ), 1000, 5000, TimeUnit.MILLISECONDS);
+
+
+    }
+
+    public void handlerAdapt() {
         ThreadPoolExecutor poolExecutor = ThreadManager.getPool(task.getName( ));
 
         //判断队列是否已经到达界限值
         List<Map<String, Object>> taskData = extract.extractWrapper( );
 
+        LOG.info("收取的数据" + taskData);
         if (taskData == null || taskData.size( ) == 0) {
             return;
         }
@@ -59,6 +71,5 @@ public class TaskWithQueue {
         for (int i = 0; i < taskData.size( ); i++) {
             poolExecutor.submit(new TaskProcessor(taskData.get(i), trans, load));
         }
-
     }
 }

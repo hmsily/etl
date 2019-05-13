@@ -41,7 +41,6 @@ public class SourceExtract extends AbstractExtract {
     
     private static final Logger LOG = LoggerFactory.getLogger(SourceExtract.class);
 
-    private static int EXTRACT_SIZE = 0;
 
     private static int EXTRACT_TYPE = 0;
 
@@ -50,7 +49,6 @@ public class SourceExtract extends AbstractExtract {
 			TASK_PARAMS.put(TABLE_NAME, PropertyUtil.getProperty(TABLE_NAME));
 			TASK_PARAMS.put(FIELD_NAME, PropertyUtil.getProperty(FIELD_NAME));
 			TASK_PARAMS.put(FIELDS, PropertyUtil.getProperty(FIELDS));
-			EXTRACT_SIZE = Integer.parseInt(PropertyUtil.getProperty("task.extract.size"));
 			EXTRACT_TYPE = Integer.parseInt(PropertyUtil.getProperty("task.extract.type"));
 
     }
@@ -62,8 +60,6 @@ public class SourceExtract extends AbstractExtract {
 
         TASK_PARAMS.put("taskName",getTaskName());
         
-        LOG.info("配置的抽取的默认大小是：" + EXTRACT_SIZE);
-
         List<Map<String, Object>> list;
         if (EXTRACT_TYPE == 0) {
             list = dataService.getByID(TASK_PARAMS);

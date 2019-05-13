@@ -7,13 +7,13 @@
         (#{taskId},#{taskName},#{table},#{field},#{fields},#{end},#{updateTime})
     </insert>
 
-    <update id="updateUser" parameterType="Map">
-		update t_task SET userName=#{user.userName},passWord=#{user.password} WHERE id=#{user.id}
+    <update id="updateRecord" parameterType="Map">
+		update t_task SET UPDATE_TIME=#{updateTime},CURRENT_VALUE=#{end} WHERE ID=#{taskId}
 	</update>
 
     <select id="getRecord" parameterType="Map" resultType="Map">
         SELECT
         *
-        FROM t_task where id=#{id}
+        FROM t_task where TASK_NAME=#{taskName}
     </select>
 </mapper>
