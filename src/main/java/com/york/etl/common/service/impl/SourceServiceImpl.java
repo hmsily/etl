@@ -43,6 +43,7 @@ public class SourceServiceImpl implements SourceService {
     	Map<String,Object> taskRecord = taskMapper.getRecord(condition);
     	long maxID = sourceMapper.getMaxId(condition);
     	if (taskRecord == null) {
+
     		String taskId = UUID.randomUUID().toString().replace("-","");
     		condition.put("taskId",taskId);
     		begin = sourceMapper.getMinId(condition);
@@ -52,6 +53,7 @@ public class SourceServiceImpl implements SourceService {
     		taskRecord.put("updateTime",new Date());
 			taskMapper.addRecord(taskRecord);
 		}else {
+
 			begin = Long.valueOf(taskRecord.get("CURRENT_VALUE").toString( ));
 			end = ((begin + INTERVAL) > maxID)? maxID:(begin + INTERVAL) ;
 			taskRecord.put("end", end);
