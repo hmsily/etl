@@ -14,8 +14,8 @@ public class StringUtil {
 	 * @param strings 字符串变参
 	 * @return 如果字符串中有为null或者""的返回true
 	 */
-	public static boolean isEmpty(String... strings) {
-		for (String string : strings) {
+	public static boolean isEmpty(Object... strings) {
+		for (Object string : strings) {
 			if (string == null || "".equals(string)) {
 				return true;
 			}
