@@ -4,12 +4,18 @@ import com.york.etl.common.mapper.SourceMapper;
 import com.york.etl.common.mapper.TaskMapper;
 import com.york.etl.common.service.SourceService;
 import com.york.etl.util.PropertyUtil;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
 
 /**
  * @author zhang
@@ -32,12 +38,11 @@ public class SourceServiceImpl implements SourceService {
 
     @Override
     public List<Map<String, Object>> getByID(Map<String,Object> condition) {
-		LOG.info(condition + "");
 		long begin = 0, end = 0;
     	Map<String,Object> taskRecord = taskMapper.getRecord(condition);
     	long maxID = sourceMapper.getMaxId(condition);
     	if (taskRecord == null) {
-    		LOG.info("数据库中有记录获取的task信息是：" + taskRecord);
+    		LOG.info("数据库中有记录获取的task信息是：{}", taskRecord);
     		String taskId = UUID.randomUUID().toString().replace("-","");
     		condition.put("taskId",taskId);
     		begin = sourceMapper.getMinId(condition);
@@ -47,7 +52,7 @@ public class SourceServiceImpl implements SourceService {
     		taskRecord.put("updateTime",new Date());
 			taskMapper.addRecord(taskRecord);
 		}else {
-			LOG.info("数据库中有记录获取的task信息是：" + taskRecord);
+			LOG.info("数据库中有记录获取的task信息是：{}", taskRecord);
 			begin = Long.valueOf(taskRecord.get("CURRENT_VALUE").toString( ));
 			end = ((begin + INTERVAL) > maxID)? maxID:(begin + INTERVAL) ;
 			taskRecord.put("end", end);

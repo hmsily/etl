@@ -25,7 +25,7 @@ public class ThreadManager {
 
         if (ThreadPools.get(poolName) == null) {
             ThreadPools.put(poolName, new ThreadPoolExecutor(10, 20, 5000, TimeUnit.MICROSECONDS,
-                    new ArrayBlockingQueue<>(200), new NamedFactory(poolName)));
+                    new ArrayBlockingQueue<>(20000), new NamedFactory(poolName)));
         }
         return ThreadPools.get(poolName);
     }
