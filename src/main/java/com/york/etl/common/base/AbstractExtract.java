@@ -39,10 +39,7 @@ public abstract class AbstractExtract {
 
     public List<Map<String, Object>> extractWrapper() {
 
-        List<Map<String, Object>> list = extract( );
-        LOGGER.debug("抽取的数据大小是:" + (list == null ? 0 : list.size( )));
-
-        return list;
+    	return extract( );
     }
 
 }

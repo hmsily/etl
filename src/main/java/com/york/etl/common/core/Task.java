@@ -1,67 +1,97 @@
 package com.york.etl.common.core;
 
+import java.io.Serializable;
+
 /**
  * @author zhang
  * @version 1.0
  * @date 2019/5/9 0009
  * @since jdk1.8
  */
-public class Task {
+public class Task implements Serializable{
 
-    private String name;
+	/**
+	  * @Fields serialVersionUID : 序列化
+	  */
+	private static final long serialVersionUID = 1L;
 
-    private String extractClass;
+	private String name;
 
-    private String transClass;
+	private String extractClass;
 
-    private String loadClass;
+	private String transClass;
 
-    public String getName() {
-        return name;
-    }
+	private String loadClass;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getExtractClass() {
-        return extractClass;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setExtractClass(String extractClass) {
-        this.extractClass = extractClass;
-    }
+	public String getExtractClass() {
+		return extractClass;
+	}
 
-    public String getTransClass() {
-        return transClass;
-    }
+	public void setExtractClass(String extractClass) {
+		this.extractClass = extractClass;
+	}
 
-    public void setTransClass(String transClass) {
-        this.transClass = transClass;
-    }
+	public String getTransClass() {
+		return transClass;
+	}
 
-    public String getLoadClass() {
-        return loadClass;
-    }
+	public void setTransClass(String transClass) {
+		this.transClass = transClass;
+	}
 
-    public void setLoadClass(String loadClass) {
-        this.loadClass = loadClass;
-    }
+	public String getLoadClass() {
+		return loadClass;
+	}
 
-    public Task(String name, String extractClass, String transClass, String loadClass) {
-        this.name = name;
-        this.extractClass = extractClass;
-        this.transClass = transClass;
-        this.loadClass = loadClass;
-    }
+	public void setLoadClass(String loadClass) {
+		this.loadClass = loadClass;
+	}
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", extractClass='" + extractClass + '\'' +
-                ", transClass='" + transClass + '\'' +
-                ", loadClass='" + loadClass + '\'' +
-                '}';
-    }
+	
+	
+	/**
+	
+	  * 创建一个新的实例 Task. 
+	  * <p>Title: </p>
+	  * <p>Description: </p>
+	  */
+	
+	public Task() {
+		super();
+	}
+
+	/**
+	 * 创建一个新的实例 Task.
+	 * Title:
+	 * Description:
+	 * 
+	 * @param name         任务名称
+	 * @param extractClass 任务抽取类
+	 */
+	public Task(String name, String extractClass) {
+		super();
+		this.name = name;
+		this.extractClass = extractClass;
+	}
+
+	public Task(String name, String extractClass, String transClass, String loadClass) {
+		this.name = name;
+		this.extractClass = extractClass;
+		this.transClass = transClass;
+		this.loadClass = loadClass;
+	}
+
+	@Override
+	public String toString() {
+		return "Task{" + "name='" + name + '\'' + ", extractClass='" + extractClass + '\'' + ", transClass='"
+				+ transClass + '\'' + ", loadClass='" + loadClass + '\'' + '}';
+	}
 }

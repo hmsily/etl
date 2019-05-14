@@ -3,7 +3,6 @@ package com.york.etl.common.core;
 import com.york.etl.common.base.AbstractExtract;
 import com.york.etl.common.base.AbstractLoad;
 import com.york.etl.common.base.AbstractTrans;
-import com.york.etl.util.NamedFactory;
 import com.york.etl.util.StringUtil;
 
 import org.slf4j.Logger;
@@ -11,9 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author zhang
@@ -53,33 +50,51 @@ public class TaskWithQueue {
         
         if (StringUtil.isEmpty(transClass)) {
 			trans = null;
+		}else {
+			trans = (AbstractTrans) Class.forName(transClass).newInstance();
+		}
+        
+        String loadClass = task.getLoadClass();
+        
+        if (StringUtil.isEmpty(loadClass)) {
+			load = null;
+		}else {
+			load = (AbstractLoad) Class.forName(loadClass).newInstance();
 		}
 
     }
 
-    public void handler() {
+    public void handler() throws InterruptedException {
+    	ThreadPoolExecutor poolExecutor = ThreadManager.getPool(task.getName( ));
 
-        ScheduledThreadPoolExecutor scheduledThreadPoolExecutor =
-                new ScheduledThreadPoolExecutor(1, new NamedFactory("南宁抽取"));
-        scheduledThreadPoolExecutor.scheduleWithFixedDelay(() -> handlerAdapt( ), 1000, 2000, TimeUnit.MILLISECONDS);
-
+    	int queueSize = 0;
+    	while(true) {
+    		
+    		if ((queueSize = poolExecutor.getQueue().size()) <= 20000 - 500 ) {
+				
+    			//判断队列是否已经到达界限值
+    			List<Map<String, Object>> taskData = extract.extractWrapper( );
+    			
+    			LOG.info("获取的数据{}", taskData.size());
+    			if (!taskData.isEmpty()) {
+    			
+    				if (trans == null) {
+    					LOG.info("配置转换类{}", trans);
+    					continue;
+    				}
+    				
+    				for (int i = 0; i < taskData.size( ); i++) {
+    					poolExecutor.submit(new TaskProcessor(taskData.get(i), trans, load));
+    				}
+    			}
+    			
+			}else {
+				LOG.warn("队列中的数据大小为{}",queueSize);
+			}
+    		
+    		Thread.sleep(1);
+    	}
 
     }
 
-    public void handlerAdapt() {
-    	
-        ThreadPoolExecutor poolExecutor = ThreadManager.getPool(task.getName( ));
-
-        //判断队列是否已经到达界限值
-        List<Map<String, Object>> taskData = extract.extractWrapper( );
-
-        LOG.info("收取的数据" + taskData);
-        if (taskData == null || taskData.size( ) == 0 || null == trans) {
-            return;
-        }
-
-        for (int i = 0; i < taskData.size( ); i++) {
-            poolExecutor.submit(new TaskProcessor(taskData.get(i), trans, load));
-        }
-    }
 }

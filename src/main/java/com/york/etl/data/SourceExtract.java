@@ -50,7 +50,7 @@ public class SourceExtract extends AbstractExtract {
 			TASK_PARAMS.put(FIELD_NAME, PropertyUtil.getProperty(FIELD_NAME));
 			TASK_PARAMS.put(FIELDS, PropertyUtil.getProperty(FIELDS));
 			EXTRACT_TYPE = Integer.parseInt(PropertyUtil.getProperty("task.extract.type"));
-			LOG.debug("构建的任务对象为：" + TASK_PARAMS);
+			LOG.info("构建的任务对象为：{}" , TASK_PARAMS);
 
     }
 

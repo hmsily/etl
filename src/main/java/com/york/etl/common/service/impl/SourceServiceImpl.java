@@ -4,12 +4,17 @@ import com.york.etl.common.mapper.SourceMapper;
 import com.york.etl.common.mapper.TaskMapper;
 import com.york.etl.common.service.SourceService;
 import com.york.etl.util.PropertyUtil;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
 
 /**
  * @author zhang
@@ -20,9 +25,11 @@ import java.util.*;
 @Service
 public class SourceServiceImpl implements SourceService {
 
+	
+	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(SourceServiceImpl.class);
+	
 	private static final long INTERVAL = Integer.parseInt(PropertyUtil.getProperty("task.interval"));
 
-	private static final Logger LOG = LoggerFactory.getLogger(SourceServiceImpl.class);
     @Autowired
     private TaskMapper taskMapper;
     
@@ -32,12 +39,10 @@ public class SourceServiceImpl implements SourceService {
 
     @Override
     public List<Map<String, Object>> getByID(Map<String,Object> condition) {
-		LOG.info(condition + "");
 		long begin = 0, end = 0;
     	Map<String,Object> taskRecord = taskMapper.getRecord(condition);
     	long maxID = sourceMapper.getMaxId(condition);
     	if (taskRecord == null) {
-    		LOG.info("数据库中有记录获取的task信息是：" + taskRecord);
     		String taskId = UUID.randomUUID().toString().replace("-","");
     		condition.put("taskId",taskId);
     		begin = sourceMapper.getMinId(condition);
@@ -47,7 +52,6 @@ public class SourceServiceImpl implements SourceService {
     		taskRecord.put("updateTime",new Date());
 			taskMapper.addRecord(taskRecord);
 		}else {
-			LOG.info("数据库中有记录获取的task信息是：" + taskRecord);
 			begin = Long.valueOf(taskRecord.get("CURRENT_VALUE").toString( ));
 			end = ((begin + INTERVAL) > maxID)? maxID:(begin + INTERVAL) ;
 			taskRecord.put("end", end);
@@ -57,6 +61,7 @@ public class SourceServiceImpl implements SourceService {
 		}
 		condition.put("begin", begin);
 		condition.put("end", end);
+		LOG.info("抽取区间{}-------{}",begin,end);
         return sourceMapper.listById(condition);
     }
 
@@ -65,7 +70,7 @@ public class SourceServiceImpl implements SourceService {
     	long begin,end;
     	Map<String,Object> taskRecord = taskMapper.getRecord(condition);
     	if (taskRecord == null) {
-    		begin = ((Date)sourceMapper.getMinDate(condition)).getTime();
+    		begin = sourceMapper.getMinDate(condition).getTime();
     		condition.put("begin",begin);
     		condition.put("end",INTERVAL);
     		taskRecord = new HashMap<String, Object>(condition);

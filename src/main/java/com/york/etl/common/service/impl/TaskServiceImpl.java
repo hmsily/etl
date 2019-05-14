@@ -28,7 +28,10 @@ public class TaskServiceImpl implements TaskService {
         } catch (InstantiationException e) {
             e.printStackTrace( );
             result = e.getMessage();
-        }
+        } catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return result;
     }
 }
