@@ -33,7 +33,7 @@ public class PropertyUtil implements Runnable{
         return PropertyContainer.get(name);
     }
 
-    private synchronized static void refreshContext(){
+    private static synchronized void refreshContext(){
         String path = PropertyUtil.class.getResource("/").getPath();
         File rootDir = new File(path);
 
