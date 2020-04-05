@@ -23,6 +23,7 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    
     @PostMapping(value = "/publish")
     public String publish(@RequestBody Task task){
         LOG.info("enter in task publish method!");
