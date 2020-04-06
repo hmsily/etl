@@ -40,6 +40,7 @@ public class SourceLoad extends AbstractLoad{
 	
 	@Override
 	public void load(Map<String, Object> o) {
+		
 		LOG.info("{}上传数据{}成功",Thread.currentThread().getName(),o);
 	}
 
